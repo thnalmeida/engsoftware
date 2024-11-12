@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Consultar e Remover Usuário - Farmácia Lótus</title>
+    <link rel="icon" href="https://img.icons8.com/ios/452/pharmacy.png"> <!-- Ícone de farmácia -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #f8a5c2; /* Rosa claro */
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #5f6368;
+            font-size: 26px;
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 15px 0 5px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: #fff;
+            transition: all 0.3s ease;
+        }
+        input:focus, select:focus, button:focus {
+            outline: none;
+            border-color: #56c39d; /* Verde claro */
+        }
+        .search-btn {
+            background-color: #56c39d;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .search-btn:hover {
+            background-color: #47b68c;
+        }
+        .results {
+            margin-top: 30px;
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 18px;
+        }
+        .results th, .results td {
+            padding: 15px;
+            border-bottom: 1px solid #ddd;
+        }
+        .results th {
+            background-color: #f8a5c2;
+            color: white;
+        }
+        .results td a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .results td a:hover {
+            color: #56c39d;
+        }
+        .results td .delete-btn {
+            background-color: #ff4d4d; /* Vermelho */
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        .results td .delete-btn:hover {
+            background-color: #e02d2d;
+        }
+        .user-details {
+            display: none;
+            background-color: #f0f8f4;
+            padding: 20px;
+            border-radius: 6px;
+            margin-top: 20px;
+            font-size: 18px;
+        }
+        .user-details p {
+            margin: 10px 0;
+        }
+        .user-details strong {
+            font-weight: bold;
+        }
+        .icon {
+            width: 30px;
+            height: 30px;
+            vertical-align: middle;
+            margin-right: 10px;
+        }
+        .alert {
+            background-color: #ffefb3;
+            border: 1px solid #ffcc00;
+            color: #9e7d00;
+            padding: 10px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="https://img.icons8.com/ios/452/pharmacy.png" alt="Farmácia Lótus" class="icon">
+    <span>Farmácia Lótus - Consulta de Usuários</span>
+</header>
+
+<div class="container">
+    <h2>Consulta de Usuários</h2>
+    
+    <!-- Filtros de Pesquisa -->
+    <form id="searchForm">
+        <label for="nome">Nome:</label>
+        <input type="text" id="nome" name="nome" placeholder="Digite o nome do usuário" />
+
+        <label for="nivel">Nível de Acesso:</label>
+        <select id="nivel" name="nivel">
+            <option value="">Selecione o nível</option>
+            <option value="farmaceutico">Farmacêutico</option>
+            <option value="assistente">Assistente de farmácia</option>
+            <option value="administrador">Administrador</option>
+        </select>
+
+        <label for="cpf">CPF:</label>
+        <input type="text" id="cpf" name="cpf" placeholder="Digite o CPF (xxx.xxx.xxx-xx)" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="Formato válido: xxx.xxx.xxx-xx" />
+
+        <button type="button" class="search-btn" onclick="searchUsers()">Pesquisar</button>
+    </form>
+    
+    <!-- Aviso de Exclusão de Administrador -->
+    <div id="adminAlert" class="alert" style="display: none;">
+        <strong>Atenção!</strong> Não é possível excluir o último administrador do sistema.
+    </div>
+
+    <!-- Tabela de Resultados -->
+    <table class="results" id="resultsTable" style="display: none;">
+        <thead>
+            <tr>
+                <th>Nome</th>
+                <th>CPF</th>
+                <th>Telefone</th>
+                <th>E-mail</th>
+                <th>Excluir</th> <!-- Coluna para o botão de exclusão -->
+            </tr>
+        </thead>
+        <tbody id="resultsBody">
+            <!-- Os resultados serão inseridos aqui -->
+        </tbody>
+    </table>
+
+    <!-- Detalhes do Usuário Selecionado -->
+    <div class="user-details" id="userDetails">
+        <h3>Detalhes do Usuário</h3>
+        <p><strong>Nome:</strong> <span id="detailNome"></span></p>
+        <p><strong>CPF:</strong> <span id="detailCpf"></span></p>
+        <p><strong>Endereço:</strong> <span id="detailEndereco"></span></p>
+        <p><strong>Telefone:</strong> <span id="detailTelefone"></span></p>
+        <p><strong>E-mail:</strong> <span id="detailEmail"></span></p>
+        <p><strong>Nível de Acesso:</strong> <span id="detailNivel"></span></p>
+        <p><strong>Senha:</strong> <span id="detailSenha"></span></p>
+    </div>
+</div>
+
+<script>
+    // Dados fictícios para simular uma consulta
+    const usuarios = [
+        { nome: "João Silva", cpf: "123.456.789-01", telefone: "(11) 98765-4321", email: "joao@farmacia.com", endereco: "Rua A, 123", nivel: "farmaceutico", senha: "senha123" },
+        { nome: "Maria Oliveira", cpf: "234.567.890-12", telefone: "(21) 99876-5432", email: "maria@farmacia.com", endereco: "Rua B, 456", nivel: "assistente", senha: "senha456" },
+        { nome: "Pedro Santos", cpf: "345.678.901-23", telefone: "(31) 91234-5678", email: "pedro@farmacia.com", endereco: "Rua C, 789", nivel: "administrador", senha: "senha789" },
+        { nome: "Carlos Almeida", cpf: "456.789.012-34", telefone: "(41) 93456-7890", email: "carlos@farmacia.com", endereco: "Rua D, 101", nivel: "administrador", senha: "senha101" }
+    ];
+
+    // Função de pesquisa de usuários
+    function searchUsers() {
+        const nome = document.getElementById('nome').value.toLowerCase();
+        const nivel = document.getElementById('nivel').value;
+        const cpf = document.getElementById('cpf').value;
+
+        const filteredUsers = usuarios.filter(user => {
+            return (!nome || user.nome.toLowerCase().includes(nome)) &&
+                   (!nivel || user.nivel === nivel) &&
+                   (!cpf || user.cpf.includes(cpf));
+        });
+
+        displayResults(filteredUsers);
+    }
+
+    // Função para exibir resultados da pesquisa
+    function displayResults(users) {
+        const resultsTable = document.getElementById('resultsTable');
+        const resultsBody = document.getElementById('resultsBody');
+        const adminAlert = document.getElementById('adminAlert');
+        resultsBody.innerHTML = ""; // Limpar resultados anteriores
+
+        if (users.length === 0) {
+            resultsBody.innerHTML = "<tr><td colspan='5'>Nenhum usuário encontrado.</td></tr>";
+            resultsTable.style.display = "table";
+            return;
+        }
+
+        // Exibir os resultados encontrados
+        users.sort((a, b) => a.nome.localeCompare(b.nome)); // Ordena os resultados por nome
+
+        users.forEach(user => {
+            const row = document.createElement('tr');
+            row.innerHTML = `
+                <td><a href="#" onclick="showUserDetails('${user.cpf}')">${user.nome}</a></td>
+                <td>${user.cpf}</td>
+                <td>${user.telefone}</td>
+                <td>${user.email}</td>
+                <td><button class="delete-btn" onclick="removeUser('${user.cpf}')">Excluir</button></td>
+            `;
+            resultsBody.appendChild(row);
+        });
+
+        resultsTable.style.display = "table";
+    }
+
+    // Função para exibir os detalhes do usuário
+    function showUserDetails(cpf) {
+        const user = usuarios.find(u => u.cpf === cpf);
+        if (user) {
+            document.getElementById('detailNome').textContent = user.nome;
+            document.getElementById('detailCpf').textContent = user.cpf;
+            document.getElementById('detailEndereco').textContent = user.endereco;
+            document.getElementById('detailTelefone').textContent = user.telefone;
+            document.getElementById('detailEmail').textContent = user.email;
+            document.getElementById('detailNivel').textContent = user.nivel;
+            document.getElementById('detailSenha').textContent = user.senha;
+
+            document.getElementById('userDetails').style.display = "block";
+        }
+    }
+
+    // Função para remover o usuário
+    function removeUser(cpf) {
+        const userToRemove = usuarios.find(u => u.cpf === cpf);
+        
+        // Verifica se o usuário é o único administrador
+        if (userToRemove.nivel === "administrador" && usuarios.filter(u => u.nivel === "administrador").length === 1) {
+            alert("Não é possível excluir o último administrador.");
+            return;
+        }
+        
+        // Confirmação antes de remover
+        const confirmRemove = confirm(`Tem certeza que deseja excluir o usuário ${userToRemove.nome}?`);
+        if (confirmRemove) {
+            const index = usuarios.indexOf(userToRemove);
+            if (index !== -1) {
+                usuarios.splice(index, 1); // Remove o usuário
+                alert(`${userToRemove.nome} foi removido com sucesso!`);
+                searchUsers(); // Recarrega a pesquisa após a exclusão
+            }
+        }
+    }
+</script>
+
+</body>
+</html>
+

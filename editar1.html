@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edição de Usuário - Farmácia Lótus</title>
+    <link rel="icon" href="https://img.icons8.com/ios/452/pharmacy.png"> <!-- Ícone de farmácia -->
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f9f9f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #f8a5c2; /* Rosa claro */
+            color: white;
+            padding: 20px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            background-color: #fff;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+        h2 {
+            text-align: center;
+            color: #5f6368;
+            font-size: 26px;
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            font-size: 18px;
+            font-weight: bold;
+            margin: 15px 0 5px;
+        }
+        input, select, button {
+            width: 100%;
+            padding: 12px;
+            font-size: 18px;
+            margin-bottom: 20px;
+            border: 1px solid #ddd;
+            border-radius: 6px;
+            background-color: #fff;
+            transition: all 0.3s ease;
+        }
+        input:focus, select:focus, button:focus {
+            outline: none;
+            border-color: #56c39d; /* Verde claro */
+        }
+        .action-btn {
+            background-color: #56c39d;
+            color: white;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .action-btn:hover {
+            background-color: #47b68c;
+        }
+        .alert {
+            background-color: #ffefb3;
+            border: 1px solid #ffcc00;
+            color: #9e7d00;
+            padding: 10px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+            border-radius: 6px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <img src="https://img.icons8.com/ios/452/pharmacy.png" alt="Farmácia Lótus" class="icon">
+    <span>Farmácia Lótus - Edição de Usuário</span>
+</header>
+
+<div class="container">
+    <h2>Edição de Usuário</h2>
+    
+    <!-- Formulário de Edição -->
+    <form id="edicaoForm" onsubmit="event.preventDefault(); editarUsuario();">
+        <label for="nomeEdit">Nome:</label>
+        <input type="text" id="nomeEdit" name="nomeEdit" placeholder="Digite o nome do usuário" required />
+
+        <label for="nivelEdit">Nível de Acesso:</label>
+        <select id="nivelEdit" name="nivelEdit" required>
+            <option value="farmaceutico">Farmacêutico</option>
+            <option value="assistente">Assistente de farmácia</option>
+            <option value="administrador">Administrador</option>
+        </select>
+
+        <label for="enderecoEdit">Endereço:</label>
+        <input type="text" id="enderecoEdit" name="enderecoEdit" placeholder="Digite o endereço" required />
+
+        <label for="telefoneEdit">Telefone:</label>
+        <input type="text" id="telefoneEdit" name="telefoneEdit" placeholder="(xx) xxxxx-xxxx" pattern="\(\d{2}\) \d{5}-\d{4}" required title="Formato válido: (xx) xxxxx-xxxx" />
+
+        <label for="emailEdit">E-mail:</label>
+        <input type="email" id="emailEdit" name="emailEdit" placeholder="Digite o e-mail" required />
+
+        <label for="senhaEdit">Senha:</label>
+        <input type="password" id="senhaEdit" name="senhaEdit" placeholder="Digite a senha" required />
+
+        <button type="submit" class="action-btn">Editar Usuário</button>
+    </form>
+
+    <!-- Mensagem de sucesso ou erro -->
+    <div id="alert" class="alert" style="display: none;"></div>
+</div>
+
+<script>
+    // Função para editar o usuário
+    function editarUsuario() {
+        const nome = document.getElementById('nomeEdit').value;
+        const nivel = document.getElementById('nivelEdit').value;
+        const endereco = document.getElementById('enderecoEdit').value;
+        const telefone = document.getElementById('telefoneEdit').value;
+        const email = document.getElementById('emailEdit').value;
+        const senha = document.getElementById('senhaEdit').value;
+        
+        // Pega o CPF do usuário que será editado (deve ser único)
+        const cpf = prompt("Informe o CPF do usuário a ser editado (xxx.xxx.xxx-xx):");
+
+        if (!cpf) {
+            alert("CPF não fornecido!");
+            return;
+        }
+
+        // Simula a busca e edição no banco de dados (localStorage)
+        const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+        const usuarioIndex = usuarios.findIndex(user => user.cpf === cpf);
+
+        if (usuarioIndex === -1) {
+            showAlert("Usuário não encontrado.", "error");
+            return;
+        }
+
+        // Atualiza os dados do usuário
+        usuarios[usuarioIndex] = { cpf, nome, nivel, endereco, telefone, email, senha };
+        localStorage.setItem('usuarios', JSON.stringify(usuarios));
+
+        showAlert("Usuário editado com sucesso!", "success");
+        document.getElementById('edicaoForm').reset();
+    }
+
+    // Função para exibir alertas
+    function showAlert(message, type) {
+        const alertBox = document.getElementById('alert');
+        alertBox.textContent = message;
+        alertBox.style.backgroundColor = type === "success" ? "#d4edda" : "#f8d7da";
+        alertBox.style.display = "block";
+    }
+</script>
+
+</body>
+</html>
+
