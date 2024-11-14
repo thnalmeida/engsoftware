@@ -1,0 +1,136 @@
+.caixa {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+    background-color: #ffffff;
+    border-radius: 5px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.alinhar{
+    text-align: left;
+}
+
+h2,label{
+    color:rgb(79, 188, 148);
+}
+
+input{
+    background: rgb(239, 255, 242);
+}
+
+button {
+    width: 50%;
+    padding: 10px;
+    font-size: 16px;
+    color: white;
+    background-color: rgb(79, 188, 148);
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 5px 0;
+}
+
+input, select {
+    width: 100%;
+    padding: 8px;
+    margin: 5px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/* Estilo para a tabela de resultados */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilo para o cabeçalho da tabela */
+/* Estilo para a tabela de resultados */
+/* Estilo para a tabela de resultados */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    font-family: Arial, sans-serif;
+}
+
+/* Estilo para o cabeçalho da tabela */
+table th {
+    background-color: rgb(55, 122, 96); /* Cor de fundo do cabeçalho */
+    color: white; /* Cor do texto do cabeçalho */
+    padding: 10px;
+    text-align: left;
+    font-weight: bold;
+    border: 1px solid #ddd;
+}
+
+/* Estilo para as células da tabela */
+table td {
+    padding: 8px;
+    border: 1px solid #ddd;
+    text-align: left;
+    background-color: rgb(79, 188, 148);
+}
+
+/* Cor de fundo alternada para linhas */
+table tr:nth-child(even) {
+    background-color: #f2f2f2; /* Cor de fundo para linhas pares */
+}
+
+/* Cor de fundo para a linha ao passar o mouse */
+table tr:hover {
+    background-color: #ddd; /* Cor ao passar o mouse */
+}
+
+/* Ajustes para dispositivos móveis */
+@media screen and (max-width: 600px) {
+    /* Exibe cada linha como um "card" */
+    table, thead, tbody, th, td, tr {
+        display: block;
+        width: 100%;
+    }
+
+    /* Oculta o cabeçalho na visualização móvel */
+    thead tr {
+        display: none;
+    }
+
+    /* Ajusta as células para parecerem "cards" */
+    tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        padding: 10px;
+        background-color: #fff;
+    }
+
+    td {
+        border: none;
+        padding: 10px;
+        position: relative;
+        text-align: left;
+    }
+
+    /* Exibe o nome do cabeçalho antes de cada valor */
+    td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        text-transform: uppercase;
+        color: rgb(55, 122, 96);
+        display: block;
+        margin-bottom: 5px;
+    }
+}
+
+.image-container {
+    width: 100%;      /* O contêiner ocupa 100% da largura disponível */
+    max-width: -50%; /* Largura máxima do contêiner (opcional) */
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
