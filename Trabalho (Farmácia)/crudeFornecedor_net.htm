@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmácia Lotus</title>
+    <!-- Adicionando o link para Font Awesome -->
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d9f7d6;
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        header {
+            background-color: #b3d9ff;
+            color: #fff;
+            padding: 30px;
+            text-align: center;
+            border-bottom: 4px solid #cce5cc;
+            width: 100%;
+            max-width: 800px;
+        }
+        header h1 {
+            font-size: 2.5em;
+            margin: 10px 0;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 30px;
+        }
+        .button-container a {
+            padding: 20px 40px;
+            margin: 10px;
+            background-color: #b3d9ff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .button-container a i {
+            margin-right: 10px;
+        }
+        .button-container a:hover {
+            background-color: #99ccff;
+        }
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            display: none;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            font-weight: bold;
+            color: #5a5a5a;
+        }
+        input, textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 5px;
+        }
+        input[type="submit"] {
+            background-color: #cce5cc;
+            font-weight: bold;
+        }
+        .back-button {
+            margin-top: 20px;
+            background-color: #ff9999;
+            color: #fff;
+            text-align: center;
+        }
+        .message {
+            margin-top: 10px;
+            color: #4CAF50;
+        }
+        .result-list {
+            margin-top: 20px;
+        }
+        .result-item {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Farmácia Lotus</h1>
+    <p>Gerenciamento de Fornecedores</p>
+</header>
+
+<div class="button-container">
+    <a href="#cadastrar" onclick="showForm('cadastrar')"><i class="fas fa-truck"></i>Cadastrar Fornecedor</a>
+    <a href="#consultar" onclick="showForm('consultar')"><i class="fas fa-user"></i>Consultar Fornecedor</a>
+    <a href="#alterar" onclick="showForm('alterar')"><i class="fas fa-user-edit"></i>Alterar Fornecedor</a>
+    <a href="#excluir" onclick="showForm('excluir')"><i class="fas fa-user-times"></i>Excluir Fornecedor</a>
+</div>
+
+<!-- Cadastrar Fornecedor -->
+<div id="cadastrar" class="container">
+    <h2>Cadastrar Fornecedor</h2>
+    <form onsubmit="handleCadastrar(event)">
+        <div class="form-group">
+            <label>Nome *</label>
+            <input type="text" id="nome" required>
+        </div>
+        <div class="form-group">
+            <label>CNPJ *</label>
+            <input type="text" id="cnpj" required pattern="^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$" placeholder="xx.xxx.xxx/xxxx-xx">
+        </div>
+        <div class="form-group">
+            <label>Telefone *</label>
+            <input type="text" id="telefone" required pattern="^\(\d{2}\) \d{5}-\d{4}$" placeholder="(xx) xxxxx-xxxx">
+        </div>
+        <div class="form-group">
+            <label>E-mail *</label>
+            <input type="email" id="email" required>
+        </div>
+        <div class="form-group">
+            <label>Endereço</label>
+            <input type="text" id="endereco">
+        </div>
+        <input type="submit" value="Cadastrar Fornecedor">
+    </form>
+    <div class="message" id="cadastrarMessage"></div>
+    <a href="#" class="back-button" onclick="showHome()">Voltar</a>
+</div>
+
+<!-- Consultar Fornecedor -->
+<div id="consultar" class="container">
+    <h2>Consultar Fornecedor</h2>
+    <form onsubmit="handleConsultar(event)">
+        <div class="form-group">
+            <label>Nome</label>
+            <input type="text" id="consultarNome">
+        </div>
+        <div class="form-group">
+            <label>CNPJ *</label>
+            <input type="text" id="consultarCNPJ" pattern="^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$">
+        </div>
+        <div class="form-group">
+            <label>Telefone</label>
+            <input type="text" id="consultarTelefone" pattern="^\(\d{2}\) \d{5}-\d{4}$">
+        </div>
+        <input type="submit" value="Consultar Fornecedor">
+    </form>
+    <div class="message" id="consultaResultado"></div>
+    <div id="results" class="result-list"></div>
+    <a href="#" class="back-button" onclick="showHome()">Voltar</a>
+</div>
+
+<!-- Formulário para Alterar Fornecedor -->
+<div id="alterar" class="container">
+    <h2>Alterar Fornecedor</h2>
+    <form onsubmit="handleAlterar(event)">
+        <div class="form-group">
+            <label for="alterarCNPJ">CNPJ do Fornecedor <span class="required">*</span></label>
+            <input type="text" id="alterarCNPJ" name="alterarCNPJ" required pattern="^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$">
+        </div>
+        <div class="form-group">
+            <label for="alterarNome">Novo Nome</label>
+            <input type="text" id="alterarNome" name="alterarNome">
+        </div>
+        <div class="form-group">
+            <label for="alterarTelefone">Novo Telefone</label>
+            <input type="text" id="alterarTelefone" name="alterarTelefone" placeholder="(xx) xxxxx-xxxx">
+        </div>
+        <div class="form-group">
+            <label for="alterarEmail">Novo E-mail</label>
+            <input type="email" id="alterarEmail" name="alterarEmail" placeholder="nome@dominio.com">
+        </div>
+        <div class="form-group">
+            <label for="alterarEndereco">Novo Endereço</label>
+            <input type="text" id="alterarEndereco" name="alterarEndereco">
+        </div>
+        <input type="submit" value="Alterar Fornecedor">
+    </form>
+    <div class="message" id="alterarMessage"></div>
+    <a href="#" class="back-button" onclick="showHome()">Voltar à Tela Inicial</a>
+</div>
+
+<!-- Excluir Fornecedor -->
+<div id="excluir" class="container">
+    <h2>Excluir Fornecedor</h2>
+    <form id="formExcluir" onsubmit="handleExcluir(event)">
+        <div class="form-group">
+            <label>CNPJ *</label>
+            <input type="text" id="excluirCNPJ" required pattern="^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$">
+        </div>
+        <input type="submit" value="Excluir Fornecedor">
+    </form>
+   
+    <div class="confirmacao-container" id="confirmacaoContainer" style="display: none;">
+        <p>Tem certeza que deseja excluir este fornecedor?</p>
+        <button class="confirm" onclick="confirmarExclusao()">Sim</button>
+        <button class="cancel" onclick="cancelarExclusao()">Não</button>
+    </div>
+   
+    <div class="message" id="excluirMessage"></div>
+    <a href="#" class="back-button" onclick="showHome()">Voltar</a>
+</div>
+
+<script>
+    let fornecedores = [];
+
+    function showForm(formId) {
+        document.querySelectorAll('.container').forEach(form => form.style.display = 'none');
+        document.getElementById(formId).style.display = 'block';
+    }
+
+    function showHome() {
+        document.querySelectorAll('.container').forEach(form => form.style.display = 'none');
+    }
+
+    function handleCadastrar(event) {
+        event.preventDefault();
+        const nome = document.getElementById('nome').value;
+        const cnpj = document.getElementById('cnpj').value;
+        const telefone = document.getElementById('telefone').value;
+        const email = document.getElementById('email').value;
+        const endereco = document.getElementById('endereco').value;
+
+        fornecedores.push({ nome, cnpj, telefone, email, endereco });
+        
+        document.getElementById('cadastrarMessage').textContent = "Fornecedor cadastrado com sucesso!";
+        document.getElementById('cadastrar').reset();
+    }
+
+    function handleConsultar(event) {
+        event.preventDefault();
+        const nome = document.getElementById('consultarNome').value.toLowerCase();
+        const cnpj = document.getElementById('consultarCNPJ').value;
+        const telefone = document.getElementById('consultarTelefone').value;
+
+        const resultados = fornecedores.filter(fornecedor => 
+            (!nome || fornecedor.nome.toLowerCase().includes(nome)) &&
+            (!cnpj || fornecedor.cnpj === cnpj) &&
+            (!telefone || fornecedor.telefone === telefone)
+        );
+
+        document.getElementById('consultaResultado').textContent = '';
+        document.getElementById('results').innerHTML = '';
+
+        if (resultados.length > 0) {
+            resultados.forEach(fornecedor => {
+                const item = document.createElement('div');
+                item.classList.add('result-item');
+                item.innerHTML = `<strong>Nome:</strong> ${fornecedor.nome}<br>
+                                  <strong>CNPJ:</strong> ${fornecedor.cnpj}<br>
+                                  <strong>Telefone:</strong> ${fornecedor.telefone}<br>
+                                  <strong>Email:</strong> ${fornecedor.email}<br>
+                                  <strong>Endereço:</strong> ${fornecedor.endereco}<br>`;
+                document.getElementById('results').appendChild(item);
+            });
+        } else {
+            document.getElementById('consultaResultado').textContent = "Nenhum fornecedor encontrado.";
+        }
+    }
+
+    function handleAlterar(event) {
+        event.preventDefault();
+        const cnpj = document.getElementById('alterarCNPJ').value;
+        const fornecedor = fornecedores.find(f => f.cnpj === cnpj);
+        
+        if (fornecedor) {
+            if (document.getElementById('alterarNome').value) {
+                fornecedor.nome = document.getElementById('alterarNome').value;
+            }
+            if (document.getElementById('alterarTelefone').value) {
+                fornecedor.telefone = document.getElementById('alterarTelefone').value;
+            }
+            if (document.getElementById('alterarEmail').value) {
+                fornecedor.email = document.getElementById('alterarEmail').value;
+            }
+            if (document.getElementById('alterarEndereco').value) {
+                fornecedor.endereco = document.getElementById('alterarEndereco').value;
+            }
+
+            document.getElementById('alterarMessage').textContent = "Fornecedor alterado com sucesso!";
+            // Resetar campos após a alteração
+            document.getElementById('alterarCNPJ').value = '';
+            document.getElementById('alterarNome').value = '';
+            document.getElementById('alterarTelefone').value = '';
+            document.getElementById('alterarEmail').value = '';
+            document.getElementById('alterarEndereco').value = '';
+        } else {
+            document.getElementById('alterarMessage').textContent = "Fornecedor não encontrado.";
+        }
+    }
+
+    function handleExcluir(event) {
+        event.preventDefault();
+        const cnpj = document.getElementById('excluirCNPJ').value;
+        const index = fornecedores.findIndex(f => f.cnpj === cnpj);
+
+        if (index !== -1) {
+            fornecedores.splice(index, 1);
+            document.getElementById('excluirMessage').textContent = "Fornecedor excluído com sucesso!";
+        } else {
+            document.getElementById('excluirMessage').textContent = "Fornecedor não encontrado.";
+        }
+    }
+
+    function confirmarExclusao() {
+        // Confirmar exclusão já incluído na função handleExcluir
+    }
+
+    function cancelarExclusao() {
+        // Cancelar exclusão não é necessário, pois a lógica já está nas funções separadas
+    }
+</script>
+</body>
+</html>
