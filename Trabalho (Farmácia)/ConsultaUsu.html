@@ -5,12 +5,13 @@
 	<meta charset="UTF-8" />
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-	<title>Usuários-Consultas</title>
+	<title>Usuários</title>
 	<link rel="icon" href="https://cdn-icons-png.flaticon.com/128/3498/3498146.png"> <!-- Ícone de farmácia -->
 	<link rel="stylesheet" type="text/css" href="css/normalize.css" />
 	<link rel="stylesheet" type="text/css" href="css/demo.css" />
 	<link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.2.0/css/font-awesome.min.css" />
 	<link rel="stylesheet" type="text/css" href="css/menu_cornerbox.css" />
+	<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	<link rel="stylesheet" href="css/trabalho.css">
 
@@ -23,7 +24,7 @@
 				<div class="profile"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" width="32px"
 						height="32px" /><span>Nome do Usuário</span></div>
 				<div class="icon-list">
-					<a href="ConsultaUsu.html"><i class="fa fa-search"></i><span>Consultar</span></a>
+					<a href="CadastrarUsu.html"><i class="fas fa-folder-plus"></i><span>Cadastrar</span></a>
 					<a href="EditarUsu.html"><i class="fa fa-edit"></i><span>Editar</span></a>
 					<a href="ExcluirUsu.html"><i class="fa fa-trash"></i><span>Excluir</span></a>
 					<a href="TelaPrincipal.html"><i class="fa fa-arrow-left"></i><span>Voltar</span></a>
@@ -40,33 +41,37 @@
 						<div class="image-container">
 							<img src="https://i.imgur.com/IDpU4dX.png" alt="">
 						</div>
-						
-						<!-- Div para mostrar a mensagem de sucesso -->
-						<div id="mensagemSucesso" style="display: none; color: rgb(116, 178, 126); margin-top: 10px;">
-							Consulta realizado com sucesso!
-						</div>
 						<div class="caixa">
-                            <div id="consultar" class="form-section">
-                                <h2>Consultar Usuário</h2>
-                                <label>Nome:</label>
-                                <input type="text" id="nomeConsultar">
-                                <label>Nível de Acesso:</label>
-                                <select id="nivelConsultar">
-                                    <option value="">Selecione o nível</option>
-                                    <option value="assistente">Assistente</option>
-                                    <option value="administrador">Administrador</option>
-                                    <option value="farmaceutico">Farmacêutico</option>
-                                </select>
-                                <label>CPF:</label>
-                                <input type="text" id="cpfConsultar" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="Formato: xxx.xxx.xxx-xx">
-                                <button onclick="consultarUsuario()">Consultar</button>
-                                <div id="consultaResultado" style="display: none;">
-                                </div>
-                            </div>
+							<div id="consultar" class="form-section">
+								<h2>Consultar Usuário</h2>
+								<label>Nome:</label>
+								<input type="text" id="nomeConsultar">
+								<label>Nível de Acesso:</label>
+								<select id="nivelConsultar">
+									<option value="">Selecione o nível</option>
+									<option value="assistente">Assistente</option>
+									<option value="administrador">Administrador</option>
+									<option value="farmaceutico">Farmacêutico</option>
+								</select>
+								<label>CPF:</label>
+								<input type="text" id="cpfConsultar" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
+									title="Formato: xxx.xxx.xxx-xx">
+								<button onclick="consultarUsuario()">Consultar</button>
+							</div>
 						</div>
+						<div class="message" id="consultaResultado" style="display: none;color:red;">Nenhum Usuário
+							encontrado</div>
 						<table>
-							<tr><th>Nome</th><th>CPF</th><th>Telefone</th><th>Email</th><th>Endereço</th><th>Nível</th><th>CRM</th></tr>
-							<tbody id="resultadoConsultaTable" ></tbody>
+							<tr>
+								<th>Nome</th>
+								<th>CPF</th>
+								<th>Telefone</th>
+								<th>Email</th>
+								<th>Endereço</th>
+								<th>Nível</th>
+								<th>CRM</th>
+							</tr>
+							<tbody id="resultadoConsultaTable"></tbody>
 						</table>
 					</nav>
 				</header>
