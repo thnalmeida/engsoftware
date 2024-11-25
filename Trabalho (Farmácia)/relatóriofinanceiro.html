@@ -1,0 +1,294 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório Financeiro - Farmácia</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        /* Estilos gerais */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f9f9f9;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #2b6c76;
+        }
+        .form-container, .report-container {
+            margin: 20px 0;
+            padding: 20px;
+            border: 1px solid #b2d8d8;
+            border-radius: 5px;
+            background-color: #e6f7f7;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .form-container label, .form-container select, .form-container input {
+            display: block;
+            margin: 10px 0;
+            color: #2b6c76;
+        }
+        .form-container button {
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #5dbb63;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .form-container button:hover {
+            background-color: #4ca858;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        table th, table td {
+            border: 1px solid #b2d8d8;
+            padding: 10px;
+            text-align: left;
+        }
+        table th {
+            background-color: #d9f2f2;
+        }
+        table tbody tr:nth-child(even) {
+            background-color: #f2f9f9;
+        }
+        .chart-container {
+            margin: 20px 0;
+        }
+        .save-btn {
+            display: inline-block;
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #007acc;
+            color: white;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            text-align: center;
+        }
+        .save-btn:hover {
+            background-color: #005a99;
+        }
+        .success-message {
+            color: green;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Sistema de Relatório Financeiro - Farmácia</h1>
+
+    <!-- Formulário de Filtros -->
+    <div class="form-container">
+        <h2>Filtros de Relatório</h2>
+        <label for="data-inicial">Data Inicial (DD/MM/AAAA):</label>
+        <input type="date" id="data-inicial" required>
+        
+        <label for="data-final">Data Final (DD/MM/AAAA):</label>
+        <input type="date" id="data-final" required>
+        
+        <label for="tipo-transacao">Tipo de Transação:</label>
+        <select id="tipo-transacao">
+            <option value="todos">Todos</option>
+            <option value="entrada">Entrada (Vendas)</option>
+            <option value="saida">Saída (Gastos)</option>
+        </select>
+        
+        <label for="categoria-transacao">Categoria de Transação:</label>
+        <select id="categoria-transacao">
+            <option value="todos">Todos</option>
+        </select>
+        
+        <button id="gerar-relatorio">Gerar Relatório</button>
+    </div>
+
+    <!-- Exibição do Relatório -->
+    <div class="report-container" id="relatorio" style="display: none;">
+        <h2>Relatório Gerado</h2>
+        <p id="descricao-relatorio"></p>
+        
+        <!-- Gráfico Geral -->
+        <div class="chart-container">
+            <h3>Gráfico de Movimentação Financeira</h3>
+            <canvas id="grafico-relatorio" width="400" height="200"></canvas>
+        </div>
+
+        <!-- Gráfico de Detalhamento de Vendas -->
+        <div class="chart-container">
+            <h3>Gráfico de Detalhamento das Vendas</h3>
+            <canvas id="grafico-detalhamento" width="400" height="200"></canvas>
+        </div>
+
+        <!-- Detalhamento das Vendas -->
+        <h3>Detalhamento das Vendas</h3>
+        <table id="tabela-vendas">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Produto</th>
+                    <th>Quantidade</th>
+                    <th>Preço Unitário</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+        
+        <!-- Detalhamento dos Gastos -->
+        <h3>Detalhamento dos Gastos</h3>
+        <table id="tabela-gastos">
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Fornecedor</th>
+                    <th>Descrição</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <!-- Botão Salvar Relatório -->
+        <button class="save-btn" id="salvar-relatorio">Salvar Relatório</button>
+        <p class="success-message" id="mensagem-sucesso" style="display: none;">Relatório salvo com sucesso!</p>
+    </div>
+
+    <script>
+        const vendasFicticias = [
+            { data: "2024-11-02", produto: "Medicamento A", quantidade: 50, preco: 100, total: 5000 },
+            { data: "2024-11-10", produto: "Medicamento B", quantidade: 30, preco: 150, total: 4500 },
+            { data: "2024-11-15", produto: "Medicamento C", quantidade: 20, preco: 200, total: 4000 },
+            { data: "2024-11-25", produto: "Medicamento D", quantidade: 10, preco: 1000, total: 10000 }
+        ];
+
+        const gastosFicticios = [
+            { data: "2024-11-05", fornecedor: "Fornecedor A", descricao: "Medicamentos A e B", total: 4000 },
+            { data: "2024-11-12", fornecedor: "Fornecedor B", descricao: "Medicamentos C", total: 2000 },
+            { data: "2024-11-20", fornecedor: "Fornecedor C", descricao: "Medicamentos D", total: 2000 }
+        ];
+
+        // Atualizar categorias com base no tipo de transação
+        document.getElementById('tipo-transacao').addEventListener('change', function () {
+            const categoria = document.getElementById('categoria-transacao');
+            categoria.innerHTML = '<option value="todos">Todos</option>'; // Resetar categorias
+
+            if (this.value === 'entrada') {
+                categoria.innerHTML += `
+                    <option value="venda-medicamento">Venda de Medicamento</option>
+                    <option value="quitacao-convenio">Quitação de Convênio</option>
+                `;
+            } else if (this.value === 'saida') {
+                categoria.innerHTML += `
+                    <option value="pagamento-fornecedor">Pagamento ao Fornecedor</option>
+                    <option value="pagamento-contas">Pagamento de Contas</option>
+                `;
+            }
+        });
+
+        // Gerar descrição do relatório e tabelas
+        function gerarRelatorio() {
+            const dataInicial = document.getElementById('data-inicial').value;
+            const dataFinal = document.getElementById('data-final').value;
+            const tipoTransacao = document.getElementById('tipo-transacao').value;
+            const categoriaTransacao = document.getElementById('categoria-transacao').value;
+
+            const descricao = `
+                <strong>Data do Relatório:</strong> ${new Date().toLocaleDateString()}<br>
+                <strong>Período Considerado:</strong> ${dataInicial || 'Todas'} a ${dataFinal || 'Todas'}<br>
+                <strong>Tipo de Transação:</strong> ${tipoTransacao || 'Todos'}<br>
+                <strong>Categoria de Transação:</strong> ${categoriaTransacao || 'Todos'}
+            `;
+            document.getElementById('descricao-relatorio').innerHTML = descricao;
+
+            gerarTabelaVendas();
+            gerarTabelaGastos();
+            gerarGraficos();
+            document.getElementById('relatorio').style.display = 'block';
+        }
+
+// Gerar as tabelas de vendas e gastos
+        function gerarTabelaVendas() {
+            const tbody = document.getElementById('tabela-vendas').querySelector('tbody');
+            tbody.innerHTML = '';
+            vendasFicticias.forEach(venda => {
+                tbody.innerHTML += `<tr>
+                    <td>${venda.data}</td>
+                    <td>${venda.produto}</td>
+                    <td>${venda.quantidade}</td>
+                    <td>R$ ${venda.preco.toFixed(2)}</td>
+                    <td>R$ ${venda.total.toFixed(2)}</td>
+                </tr>`;
+            });
+        }
+
+        function gerarTabelaGastos() {
+            const tbody = document.getElementById('tabela-gastos').querySelector('tbody');
+            tbody.innerHTML = '';
+            gastosFicticios.forEach(gasto => {
+                tbody.innerHTML += `<tr>
+                    <td>${gasto.data}</td>
+                    <td>${gasto.fornecedor}</td>
+                    <td>${gasto.descricao}</td>
+                    <td>R$ ${gasto.total.toFixed(2)}</td>
+                </tr>`;
+            });
+        }
+
+        // Gerar gráficos
+        function gerarGraficos() {
+            const ctxRelatorio = document.getElementById('grafico-relatorio').getContext('2d');
+            new Chart(ctxRelatorio, {
+                type: 'pie',
+                data: {
+                    labels: ['Vendas', 'Gastos'],
+                    datasets: [{
+                        data: [22000, 8000],
+                        backgroundColor: ['#5dbb63', '#2b6c76']
+                    }]
+                }
+            });
+
+            const ctxDetalhamento = document.getElementById('grafico-detalhamento').getContext('2d');
+            new Chart(ctxDetalhamento, {
+                type: 'bar',
+                data: {
+                    labels: vendasFicticias.map(venda => venda.produto),
+                    datasets: [{
+                        label: 'Total (R$)',
+                        data: vendasFicticias.map(venda => venda.total),
+                        backgroundColor: '#5dbb63'
+                    }]
+                }
+            });
+        }
+
+        // Funcionalidade do botão "Gerar Relatório"
+        document.getElementById('gerar-relatorio').addEventListener('click', () => {
+            gerarRelatorio();
+        });
+
+        // Funcionalidade do botão "Salvar Relatório"
+        document.getElementById('salvar-relatorio').addEventListener('click', () => {
+            const sucessoMensagem = document.getElementById('mensagem-sucesso');
+            sucessoMensagem.style.display = 'block';
+
+            // Para simular o salvamento, estamos apenas exibindo uma mensagem de sucesso
+            setTimeout(() => {
+                sucessoMensagem.style.display = 'none';
+            }, 3000);  // Mensagem sumindo após 3 segundos
+        });
+
+        // Carregar o formulário inicial
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById('tipo-transacao').dispatchEvent(new Event('change'));  // Atualizar categorias ao carregar
+        });
+    </script>
+</body>
+</html>

@@ -48,18 +48,18 @@
 							<div id="cadastrar" class="form-section">
 								<h2>Cadastrar Usuário</h2>
 								<form onsubmit="cadastrarUsuario(event)">
-									<label>Nome:</label>
+									<label>Nome:*</label>
 									<input type="text" id="nomeCadastro" required>
-									<label>CPF:</label>
+									<label>CPF:*</label>
 									<input type="text" id="cpfCadastro" required pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
 										title="Formato: xxx.xxx.xxx-xx">
-									<label>Telefone:</label>
+									<label>Telefone:*</label>
 									<input type="text" id="telefoneCadastro" required>
-									<label>Email:</label>
+									<label>Email:*</label>
 									<input type="email" id="emailCadastro" required>
-									<label>Endereço:</label>
+									<label>Endereço:*</label>
 									<input type="text" id="enderecoCadastro" required>
-									<label>Nível de Acesso:</label>
+									<label>Nível de Acesso:*</label>
 									<select id="nivelCadastro" onchange="toggleCRMField('Cadastro')">
 										<option value="assistente">Assistente</option>
 										<option value="administrador">Administrador</option>

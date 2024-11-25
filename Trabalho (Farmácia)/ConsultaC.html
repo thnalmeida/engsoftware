@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="no-js">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Clientes</title>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/128/3498/3498146.png"> <!-- Ícone de farmácia -->
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.2.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/menu_cornerbox.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/trabalho.css">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="menu-wrap-2">
+            <nav class="menu">
+                <div class="profile"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" width="32px"
+                        height="32px" /><span>Nome do Usuário</span></div>
+                <div class="icon-list">
+                    <a href="CadastrarC.html"><i class="fas fa-folder-plus"></i><span>Cadastrar</span></a>
+                    <a href="EditarC.html"><i class="fa fa-edit"></i><span>Editar</span></a>
+                    <a href="ExcluirC.html"><i class="fa fa-trash"></i><span>Excluir</span></a>
+                    <a href="TelaPrincipal.html"><i class="fa fa-arrow-left"></i><span>Voltar</span></a>
+
+                </div>
+            </nav>
+            <button class="close-button" id="close-button">Close Menu</button>
+        </div>
+        <button class="menu-button" id="open-button">Open Menu</button>
+        <div class="content-wrap">
+            <div class="content">
+                <header class="codrops-header">
+                    <nav class="codrops-demos">
+                        <div class="image-container">
+                            <img src="https://i.imgur.com/IDpU4dX.png" alt="">
+                        </div>
+                        <div class="caixa">
+                            <!-- Consultar Cliente -->
+                            <div id="consultarCliente" class="form-section">
+                                <h2>Consultar Cliente</h2>
+                                <form id="formConsultarCliente" onsubmit="return consultarCliente(event)">
+                                    <div class="form-group">
+                                        <label for="consultaNome">Nome</label>
+                                        <input type="text" id="consultaNome" name="consultaNome"
+                                            placeholder="Digite o nome">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="consultaCpf">CPF</label>
+                                        <input type="text" id="consultaCpf" name="consultaCpf"
+                                            placeholder="Digite o CPF" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}">
+                                    </div>
+                                    <button type="submit">Consultar Cliente</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="message" id="consultaResultado" style="display: none;color:red;">Nenhum Usuário
+							encontrado</div>
+                        <table>
+                            <tr>
+                                <th>Nome</th>
+                                <th>CPF</th>
+                                <th>Telefone</th>
+                                <th>Endereço</th>
+                            </tr>
+                            <tbody id="resultadoConsultaTable"></tbody>
+                        </table>
+                    </nav>
+                </header>
+                <!-- Related demos -->
+                <section class="related">
+
+                </section>
+            </div>
+        </div><!-- /content-wrap -->
+    </div><!-- /container -->
+    <script src="js/classie.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/cliente.js"></script>
+
+</body>
+
+</html>
+
+<!-- https://github.com/codrops/OffCanvasMenuEffects -->
