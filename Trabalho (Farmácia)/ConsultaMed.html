@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Clientes</title>
+    <title>Medicamentos</title>
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/128/3498/3498146.png"> <!-- Ícone de farmácia -->
     <link rel="stylesheet" type="text/css" href="css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="css/demo.css" />
@@ -14,7 +14,6 @@
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/trabalho.css">
-
 </head>
 
 <body>
@@ -24,9 +23,9 @@
                 <div class="profile"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" width="32px"
                         height="32px" /><span>Nome do Usuário</span></div>
                 <div class="icon-list">
-                    <a href="CadastrarC.html"><i class="fas fa-folder-plus"></i><span>Cadastrar</span></a>
-                    <a href="ConsultaC.html"><i class="fa fa-search"></i><span>Consultar</span></a>
-                    <a href="ExcluirC.html"><i class="fa fa-trash"></i><span>Excluir</span></a>
+                    <a href="CadastrarMed.html"><i class="fas fa-folder-plus"></i><span>Cadastrar</span></a>
+                    <a href="EditarMed.html"><i class="fa fa-edit"></i><span>Editar</span></a>
+                    <a href="ExcluirMed.html"><i class="fa fa-trash"></i><span>Excluir</span></a>
                     <a href="TelaPrincipal.html"><i class="fa fa-arrow-left"></i><span>Voltar</span></a>
 
                 </div>
@@ -41,30 +40,51 @@
                         <div class="image-container">
                             <img src="https://i.imgur.com/IDpU4dX.png" alt="">
                         </div>
-
                         <div class="caixa">
-                            <div id="alterarCliente" class="form-section">
-                                <h2>Alterar Cliente</h2>
-                                <form id="formAlterarCliente" onsubmit="return alterarCliente(event)">
+                            <div id="consultar" class="form-section">
+                                <h2>Consultar Medicamento</h2>
+                                <form onsubmit="handleConsultar(event)">
                                     <div class="form-group">
-                                        <label for="cpfAlterar">CPF do Cliente *</label>
-                                        <input type="text" id="cpfAlterar" name="cpfAlterar" required
-                                            pattern="\d{3}\.\d{3}\.\d{3}-\d{2}">
+                                        <label for="consultarNome">Nome do Medicamento</label>
+                                        <input type="text" id="consultarNome" name="consultarNome" required>
                                     </div>
                                     <div class="form-group">
-                                        <label for="nomeAlterar">Novo Nome *</label>
-                                        <input type="text" id="nomeAlterar" name="nomeAlterar">
+                                        <label for="consultarDosagem">Dosagem</label>
+                                        <input type="text" id="consultarDosagem" name="consultarDosagem">
                                     </div>
                                     <div class="form-group">
-                                        <label for="telefoneAlterar">Novo Telefone</label>
-                                        <input type="text" id="telefoneAlterar" name="telefoneAlterar">
+                                        <label for="consultarFormaFarmaceutica">Forma Farmacêutica</label>
+                                        <input type="text" id="consultarFormaFarmaceutica"
+                                            name="consultarFormaFarmaceutica">
                                     </div>
-                                    <button type="submit">Alterar Cliente</button>
+                                   <button type="submit">Consultar</button>
                                 </form>
+
                             </div>
                         </div>
-                        <div id="messageAlterar" class="error"></div>
-                        <div id="successMessageAlterar" class="success"></div>
+                        <div class="message" id="consultaResultado"></div>
+
+                        <div class="scroll-table">
+                            <table id="tabelaMedicamentosConsultados">
+                                <thead>
+                                    <tr>
+                                        <th>Nome Comercial</th>
+                                        <th>Nome Genérico</th>
+                                        <th>Forma Farmacêutica</th>
+                                        <th>Dosagem</th>
+                                        <th>Via de Administração</th>
+                                        <th>Registro da Anvisa</th>
+                                        <th>Fabricante</th>
+                                        <th>Lote</th>
+                                        <th>Validade</th>
+                                        <th>Substância Ativa</th>
+                                        <th>Valor</th>
+                                        <th>Quantidade</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="consultarMedicamentosTableBody"></tbody>
+                            </table>
+                        </div>
                     </nav>
                 </header>
                 <!-- Related demos -->
@@ -76,7 +96,7 @@
     </div><!-- /container -->
     <script src="js/classie.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/funcao.js"></script>
+    <script src="js/medicamento.js"></script>
 
 </body>
 

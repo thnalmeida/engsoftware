@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>Fornecedores</title>
+    <title>Convênio</title>
     <link rel="icon" href="https://cdn-icons-png.flaticon.com/128/3498/3498146.png"> <!-- Ícone de farmácia -->
     <link rel="stylesheet" type="text/css" href="css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="css/demo.css" />
@@ -24,9 +24,9 @@
                 <div class="profile"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" width="32px"
                         height="32px" /><span>Nome do Usuário</span></div>
                 <div class="icon-list">
-                    <a href="ConsultaF.html"><i class="fas fa-user"></i><span>Consultar</span></a>
-                    <a href="EditarF.html"><i class="fas fa-user-edit"></i><span>Editar</span></a>
-                    <a href="ExcluirF.html"><i class="fas fa-user-times"></i><span>Excluir</span></a>
+                    <a href="CadastrarCon.html"><i class="fas fa-folder-plus"></i><span>Cadastrar</span></a>
+                    <a href="ConsultaCon.html"><i class="fa fa-search"></i><span>Consultar</span></a>
+                    <a href="ExcluirCon.html"><i class="fa fa-trash"></i><span>Excluir</span></a>
                     <a href="TelaPrincipal.html"><i class="fa fa-arrow-left"></i><span>Voltar</span></a>
 
                 </div>
@@ -41,36 +41,30 @@
                         <div class="image-container">
                             <img src="https://i.imgur.com/IDpU4dX.png" alt="">
                         </div>
-                        <!-- Div para mostrar a mensagem de sucesso -->
-                        <div id="mensagemSucesso" style="display: none; color: rgb(116, 178, 126); margin-top: 10px;">
-                            Cadastro realizado com sucesso!
-                        </div>
+
                         <div class="caixa">
-                            <!-- Cadastrar Fornecedor -->
-                            <div id="cadastrar" class="form-section">
-                                <h2>Cadastrar Fornecedor</h2>
-                                <form onsubmit="handleCadastrar(event)">
-                                    <label>Nome *</label>
-                                    <input type="text" id="nome" required>
-
-                                    <label>CNPJ *</label>
-                                    <input type="text" id="cnpj" required pattern="^\d{2}\.\d{3}\.\d{3}/\d{4}-\d{2}$"
-                                        placeholder="xx.xxx.xxx/xxxx-xx">
-
-                                    <label>Telefone *</label>
-                                    <input type="text" id="telefone" required pattern="^\(\d{2}\) \d{5}-\d{4}$"
-                                        placeholder="(xx) xxxxx-xxxx">
-
-                                    <label>E-mail *</label>
-                                    <input type="email" id="email" required>
-
-                                    <label>Endereço</label>
-                                    <input type="text" id="endereco">
-                                    <button type="submit">Cadastrar</button>
+                            <div id="alterarConvenio" class="form-section">
+                                <h2>Alterar Convênio</h2>
+                                <form id="formAlterarConvenio" onsubmit="return alterarConvenio(event)">
+                                    <div class="form-group">
+                                        <label for="nomeConvenioAlterar">*Nome do Convênio</label>
+                                        <input type="text" id="nomeConvenioAlterar" name="nomeConvenioAlterar" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="contatoAlterar">*Novo Contato:</label>
+                                        <input type="text" id="contatoAlterar" name="contatoAlterar" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="valoresMedicamentos">*Valores dos Medicamentos:</label>
+                                        <textarea id="valoresMedicamentos" name="valoresMedicamentos" required
+                                            placeholder="Ex: Medicamento A - R$10, Medicamento B - R$20"></textarea>
+                                    </div>
+                                    <button type="submit">Salvar Alterações</button>
                                 </form>
                             </div>
                         </div>
-
+                        <div id="successMessageAlterar" class="success"></div>
+                        <div id="errorAlterar" class="error"></div>
                     </nav>
                 </header>
                 <!-- Related demos -->
@@ -82,7 +76,7 @@
     </div><!-- /container -->
     <script src="js/classie.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/fornecedor.js"></script>
+    <script src="js/convenio.js"></script>
 
 </body>
 

@@ -85,6 +85,8 @@ table tr:hover {
     background-color: #ddd; /* Cor ao passar o mouse */
 }
 
+
+
 /* Ajustes para dispositivos móveis */
 @media screen and (max-width: 600px) {
     /* Exibe cada linha como um "card" */
@@ -134,3 +136,46 @@ img {
     height: auto;
 }
 
+/* Estilos gerais para o formulário */
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Espaçamento entre os elementos */
+    max-width: 100%; /* Responsivo para diferentes larguras */
+}
+
+/* Estilo para o label */
+label {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+/* Estilo para o textarea */
+textarea {
+    width: 100%; /* Ocupa toda a largura do container */
+    max-width: 100%; /* Mantém a responsividade */
+    min-height: 100px; /* Altura mínima */
+    padding: 10px; /* Espaçamento interno */
+    font-size: 14px;
+    border: 1px solid #ccc; /* Borda padrão */
+    border-radius: 5px; /* Cantos arredondados */
+    box-sizing: border-box; /* Inclui padding e border no tamanho total */
+    resize: vertical; /* Permite redimensionar verticalmente */
+}
+
+/* Estilo para telas menores */
+@media (max-width: 768px) {
+    textarea {
+        min-height: 80px; /* Ajusta a altura mínima */
+        font-size: 13px; /* Reduz um pouco o tamanho da fonte */
+    }
+    
+    label {
+        font-size: 14px; /* Reduz o tamanho do texto do label */
+    }
+}
+canvas {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}

@@ -1,0 +1,119 @@
+
+
+.image-container {
+    width: 100%;      /* O contêiner ocupa 100% da largura disponível */
+    max-width: -50%; /* Largura máxima do contêiner (opcional) */
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+}
+
+
+/* Estilo para o label */
+label {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.container {
+    background-color: #d9f7d6;
+    padding: 20px;
+    border-radius: 10px;
+    margin: 20px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+h1, h2, h3 {
+    color: #28a745;
+    margin-bottom: 10px;
+    text-align: center;
+}
+label {
+    display: block;
+    margin: 10px 0 5px;
+    color: #205080;
+}
+input {
+    padding: 10px;
+    width: 100%;
+    margin-bottom: 10px;
+    border: 1px solid #b3d9ff;
+    border-radius: 5px;
+    font-size: 14px;
+}
+button {
+    background-color: #28a745;
+    color: white;
+    margin-left: 25%;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    width: 50%;
+}
+button:hover {
+    background-color: #28a792;
+}
+.feedback {
+    display: none;
+    background-color: #28a745;
+    color: white;
+    padding: 10px;
+    border-radius: 5px;
+    margin-top: 20px;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    background-color: #ffffff;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+}
+table th, table td {
+    border: 1px solid #b3d9ff;
+    padding: 12px;
+    text-align: center;
+}
+table th {
+    background-color: #b3d9ff;
+    color: #000000;
+}
+#relatorio {
+    display: none;
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+.chart-container {
+    margin: 20px 0;
+    background-color: #b3d9ff;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+input{
+    width: 90%;
+    margin-left: 2.5%;
+}
+.chart-container canvas {
+    max-width: 50%;
+    height: 300px;
+}
+.summary ul {
+    list-style-type: none;
+    padding: 0;
+}
+.summary ul li {
+    margin-bottom: 5px;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: #a2cef9;
+    margin: 0;
+    padding: 0;
+}

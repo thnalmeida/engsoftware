@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="no-js">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Medicamentos</title>
+    <link rel="icon" href="https://cdn-icons-png.flaticon.com/128/3498/3498146.png"> <!-- Ícone de farmácia -->
+    <link rel="stylesheet" type="text/css" href="css/normalize.css" />
+    <link rel="stylesheet" type="text/css" href="css/demo.css" />
+    <link rel="stylesheet" type="text/css" href="fonts/font-awesome-4.2.0/css/font-awesome.min.css" />
+    <link rel="stylesheet" type="text/css" href="css/menu_cornerbox.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="css/trabalho.css">
+
+</head>
+
+<body>
+    <div class="container">
+        <div class="menu-wrap-2">
+            <nav class="menu">
+                <div class="profile"><img src="https://cdn-icons-png.flaticon.com/512/1144/1144760.png" width="32px"
+                        height="32px" /><span>Nome do Usuário</span></div>
+                <div class="icon-list">
+                    <a href="ConsultaMed.html"><i class="fa fa-search"></i><span>Consultar</span></a>
+                    <a href="EditarMed.html"><i class="fa fa-edit"></i><span>Editar</span></a>
+                    <a href="ExcluirMed.html"><i class="fa fa-trash"></i><span>Excluir</span></a>
+                    <a href="TelaPrincipal.html"><i class="fa fa-arrow-left"></i><span>Voltar</span></a>
+                </div>
+            </nav>
+            <button class="close-button" id="close-button">Close Menu</button>
+        </div>
+        <button class="menu-button" id="open-button">Open Menu</button>
+        <div class="content-wrap">
+            <div class="content color-change-3x">
+                <header class="codrops-header">
+                    <nav class="codrops-demos">
+                        <div class="image-container">
+                            <img src="https://i.imgur.com/IDpU4dX.png" alt="">
+                        </div>
+                        <div class="caixa">
+                            <!-- Formulário para Incluir Medicamento -->
+                            <div id="incluir" class="form-section">
+                                <h2>Incluir Medicamento</h2>
+                                <form onsubmit="handleIncluir(event)">
+                                    <div class="form-group">
+                                        <label for="nomeComercial">Nome Comercial <span
+                                                class="required">*</span></label>
+                                        <input type="text" id="nomeComercial" name="nomeComercial" required>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="nomeGenerico">Nome Genérico</label>
+                                        <input type="text" id="nomeGenerico" name="nomeGenerico">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="formaFarmaceutica">Forma Farmacêutica</label>
+                                        <input type="text" id="formaFarmaceutica" name="formaFarmaceutica">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="dosagem">Dosagem</label>
+                                        <input type="text" id="dosagem" name="dosagem">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="viaAdministracao">Via de Administração</label>
+                                        <input type="text" id="viaAdministracao" name="viaAdministracao">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="registroAnvisa">Registro da Anvisa</label>
+                                        <input type="text" id="registroAnvisa" name="registroAnvisa">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="fabricante">Fabricante</label>
+                                        <input type="text" id="fabricante" name="fabricante">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="lote">Lote</label>
+                                        <input type="text" id="lote" name="lote">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="validade">Validade</label>
+                                        <input type="date" id="validade" name="validade">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="substanciaAtiva">Substância Ativa</label>
+                                        <input type="text" id="substanciaAtiva" name="substanciaAtiva">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="valor">Valor</label>
+                                        <input type="text" id="valor" name="valor">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="quantidade">Quantidade</label>
+                                        <input type="number" id="quantidade" name="quantidade">
+                                    </div>
+                                    <button type="submit">Cadastrar</button>
+                                </form>
+                            </div>
+                        </div>
+                        <div class="message" id="incluirMessage"></div>
+                        <div class="message" id="incluirMessage"></div>
+
+                        <div class="scroll-table">
+                            <table id="tabelaMedicamentosIncluidos">
+                                <thead>
+                                    <tr>
+                                        <th>Nome Comercial</th>
+                                        <th>Nome Genérico</th>
+                                        <th>Forma Farmacêutica</th>
+                                        <th>Dosagem</th>
+                                        <th>Via de Administração</th>
+                                        <th>Registro da Anvisa</th>
+                                        <th>Fabricante</th>
+                                        <th>Lote</th>
+                                        <th>Validade</th>
+                                        <th>Substância Ativa</th>
+                                        <th>Valor</th>
+                                        <th>Quantidade</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="medicamentosTableBody"></tbody>
+                            </table>
+                        </div>
+                    </nav>
+                </header>
+                <!-- Related demos -->
+                <section class="related">
+
+                </section>
+            </div>
+        </div><!-- /content-wrap -->
+    </div><!-- /container -->
+    <script src="js/classie.js"></script>
+    <script src="js/main.js"></script>
+    <script src="js/medicamento.js"></script>
+
+</body>
+
+</html>
+
+<!-- https://github.com/codrops/OffCanvasMenuEffects -->

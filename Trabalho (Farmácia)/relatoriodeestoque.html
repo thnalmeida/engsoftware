@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Relatório de Controle de Estoque</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            background-color: #b2d8d8;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2, h3 {
+            color: #205080;
+            margin-bottom: 10px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+            color: #205080;
+        }
+        input {
+            padding: 10px;
+            width: 100%;
+            margin-bottom: 10px;
+            border: 1px solid #b3d9ff;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        button {
+            background-color: #205080;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+        }
+        button:hover {
+            background-color: #173a5d;
+        }
+        .feedback {
+            display: none;
+            background-color: #28a745;
+            color: white;
+            padding: 10px;
+            border-radius: 5px;
+            margin-top: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background-color: #ffffff;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        table th, table td {
+            border: 1px solid #b3d9ff;
+            padding: 12px;
+            text-align: center;
+        }
+        table th {
+            background-color: #b3d9ff;
+            color: #000000;
+        }
+        #relatorio {
+            display: none;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+        }
+        .chart-container {
+            margin: 20px 0;
+            background-color: #b3d9ff;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.05);
+        }
+        .chart-container canvas {
+            width: 50%;
+            height: 50%;
+            text-align: center;
+        }
+        .summary ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        .summary ul li {
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Relatório de Controle de Estoque</h1>
+
+        <!-- Campos de Filtro -->
+        <label for="dataInicial">Data Inicial:</label>
+        <input type="date" id="dataInicial" name="dataInicial">
+
+        <label for="dataFinal">Data Final:</label>
+        <input type="date" id="dataFinal" name="dataFinal">
+
+        <label for="validade">Data de Validade:</label>
+        <input type="date" id="validade" name="validade">
+
+        <button onclick="gerarRelatorio()">Gerar Relatório</button>
+
+        <!-- Feedback de Sucesso -->
+        <div id="feedback" class="feedback">
+            Relatório gerado com sucesso! <button onclick="baixarRelatorio()">Salvar Relatório</button>
+        </div>
+    </div>
+
+    <div id="relatorio" class="container">
+        <h2>Resumo do Relatório</h2>
+        <h3>Total de Recebimentos</h3>
+        <p><strong>Entrada de Medicamentos:</strong> R$ <span id="totalEntrada"></span></p>
+        <h3>Detalhamento das Entradas</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Fornecedor</th>
+                    <th>Medicamento</th>
+                    <th>Validade</th>
+                    <th>Quantidade</th>
+                    <th>Preço Unitário</th>
+                    <th>Total</th>
+                    <th>Disponível</th>
+                </tr>
+            </thead>
+            <tbody id="entradas"></tbody>
+        </table>
+
+        <div class="chart-container">
+            <canvas id="comprasChart"></canvas>
+        </div>
+
+        <h3>Total de Vendas</h3>
+        <p><strong>Venda de Medicamentos:</strong> R$ <span id="totalSaida"></span></p>
+        <h3>Detalhamento das Vendas</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>Data</th>
+                    <th>Medicamento</th>
+                    <th>Vendida</th>
+                    <th>Preço Unitário</th>
+                    <th>Total</th>
+                    <th>Disponível Após Venda</th>
+                </tr>
+            </thead>
+            <tbody id="saidas"></tbody>
+        </table>
+
+        <div class="chart-container">
+            <canvas id="disponibilidadeChart"></canvas>
+        </div>
+
+        <h3>Resumo Final</h3>
+        <div class="summary">
+            <ul>
+                <li><strong>Total de Entradas:</strong> R$ <span id="totalEntradaFinal"></span></li>
+                <li><strong>Total de Saídas:</strong> R$ <span id="totalSaidaFinal"></span></li>
+                <li><strong>Saldo Final de Estoque:</strong> R$ <span id="saldoFinal"></span></li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        function gerarRelatorio() {
+            // Pega as datas selecionadas
+            const dataInicial = new Date(document.getElementById('dataInicial').value);
+            const dataFinal = new Date(document.getElementById('dataFinal').value);
+            const validade = document.getElementById('validade').value;
+
+            // Verifica se as datas são válidas
+            if (isNaN(dataInicial.getTime()) || isNaN(dataFinal.getTime()) || dataInicial > dataFinal) {
+                alert("Por favor, insira um intervalo de datas válido.");
+                return;
+            }
+
+            // Função para gerar um número aleatório entre dois valores
+            function getRandomInt(min, max) {
+                return Math.floor(Math.random() * (max - min + 1)) + min;
+            }
+
+            // Função para gerar uma data aleatória entre o intervalo de datas
+            function gerarDataAleatoria(dataInicial, dataFinal) {
+                const timestampInicial = dataInicial.getTime();
+                const timestampFinal = dataFinal.getTime();
+                const timestampAleatorio = Math.floor(Math.random() * (timestampFinal - timestampInicial + 1)) + timestampInicial;
+                return new Date(timestampAleatorio);
+            }
+
+            // Dados de exemplo para entradas e saídas (com valores aleatórios)
+            const medicamentos = ['Medicamento A', 'Medicamento B', 'Medicamento C'];
+            const fornecedores = ['Fornecedor A', 'Fornecedor B', 'Fornecedor C'];
+            const entradas = [];
+            const saidas = [];
+            let totalEntrada = 0;
+            let totalSaida = 0;
+
+            // Gerar entradas e saídas aleatórias
+            for (let i = 0; i < 5; i++) {
+                const medicamento = medicamentos[Math.floor(Math.random() * medicamentos.length)];
+                const fornecedor = fornecedores[Math.floor(Math.random() * fornecedores.length)];
+                const quantidade = getRandomInt(20, 100);
+                const preco = getRandomInt(50, 200);
+                const total = quantidade * preco;
+                const dataEntrada = gerarDataAleatoria(dataInicial, dataFinal).toLocaleDateString('pt-BR');
+                const dataValidade = gerarDataAleatoria(new Date(), new Date(dataFinal.getFullYear() + 5, 11, 31)).toLocaleDateString('pt-BR');
+                entradas.push({ data: dataEntrada, fornecedor, medicamento, validade: dataValidade, quantidade, preco, total });
+                totalEntrada += total;
+                const quantidadeVendida = getRandomInt(1, quantidade);  // Vendendo uma quantidade menor ou igual à entrada
+                const precoVenda = preco;  // Mantendo o mesmo preço de entrada
+                const totalVenda = quantidadeVendida * precoVenda;
+                const disponivel = quantidade - quantidadeVendida;
+                const dataVenda = gerarDataAleatoria(dataInicial, dataFinal).toLocaleDateString('pt-BR');
+                saidas.push({ data: dataVenda, medicamento, quantidade: quantidadeVendida, preco: precoVenda, total: totalVenda, disponivel });
+                totalSaida += totalVenda;
+            }
+
+            // Exibir entradas
+            document.getElementById('entradas').innerHTML = entradas.map(e => `
+                <tr>
+                    <td>${e.data}</td>
+                    <td>${e.fornecedor}</td>
+                    <td>${e.medicamento}</td>
+                    <td>${e.validade}</td>
+                    <td>${e.quantidade}</td>
+                    <td>R$ ${e.preco.toFixed(2)}</td>
+                    <td>R$ ${e.total.toFixed(2)}</td>
+                    <td>${e.quantidade}</td>
+                </tr>
+            `).join('');
+
+            // Exibir saídas
+            document.getElementById('saidas').innerHTML = saidas.map(s => `
+                <tr>
+                    <td>${s.data}</td>
+                    <td>${s.medicamento}</td>
+                    <td>${s.quantidade}</td>
+                    <td>R$ ${s.preco.toFixed(2)}</td>
+                    <td>R$ ${s.total.toFixed(2)}</td>
+                    <td>${s.disponivel}</td>
+                </tr>
+            `).join('');
+
+            // Exibir totais
+            document.getElementById('totalEntrada').textContent = totalEntrada.toFixed(2);
+            document.getElementById('totalSaida').textContent = totalSaida.toFixed(2);
+            document.getElementById('totalEntradaFinal').textContent = totalEntrada.toFixed(2);
+            document.getElementById('totalSaidaFinal').textContent = totalSaida.toFixed(2);
+            document.getElementById('saldoFinal').textContent = (totalEntrada - totalSaida).toFixed(2);
+
+            // Exibir feedback
+            document.getElementById('feedback').style.display = 'block';
+
+            // Exibir relatório
+            document.getElementById('relatorio').style.display = 'block';
+
+            // Gerar gráficos
+            gerarGraficos();
+        }
+
+        function gerarGraficos() {
+            // Dados para o gráfico de compras
+            const comprasData = {
+                labels: ['Medicamento A', 'Medicamento B', 'Medicamento C'],
+                datasets: [{
+                    label: 'Controle de Estoque - Compras',
+                    data: [100, 60, 40],
+                    backgroundColor: ['#ff6384', '#36a2eb', '#ffcd56'],
+                    borderColor: ['#ff6384', '#36a2eb', '#ffcd56'],
+                    borderWidth: 1
+                }]
+            };
+
+            // Configuração do gráfico de compras
+            const ctxCompras = document.getElementById('comprasChart').getContext('2d');
+            new Chart(ctxCompras, {
+                type: 'pie',
+                data: comprasData
+            });
+
+            // Dados para o gráfico de disponibilidade
+            const disponibilidadeData = {
+                labels: ['Medicamento A (Sim)', 'Medicamento B (Não)', 'Medicamento C (Não)'],
+                datasets: [{
+                    label: 'Controle de Estoque - Disponibilidade',
+                    data: [100, 60, 40],
+                    backgroundColor: ['#34c38f', '#ff9f40', '#ff3e3e'],
+                    borderColor: ['#34c38f', '#ff9f40', '#ff3e3e'],
+                    borderWidth: 1
+                }]
+            };
+
+            // Configuração do gráfico de disponibilidade
+            const ctxDisponibilidade = document.getElementById('disponibilidadeChart').getContext('2d');
+            new Chart(ctxDisponibilidade, {
+                type: 'pie',
+                data: disponibilidadeData
+            });
+        }
+
+        function baixarRelatorio() {
+            alert("Relatório salvo com sucesso!");
+        }
+    </script>
+
+</body>
+</html>

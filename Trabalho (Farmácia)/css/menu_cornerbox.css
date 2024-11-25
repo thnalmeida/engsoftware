@@ -207,8 +207,6 @@ img {
 	transform: translate3d(80px,80px,0);
 }
 
-
-
 .show-menu .content::before {
 	opacity: 1;
 	-webkit-transition: opacity 0.3s;
@@ -216,4 +214,73 @@ img {
 	-webkit-transform: translate3d(0,0,0);
 	transform: translate3d(0,0,0);
 }
-  
+
+/* Configurações gerais para telas menores */
+@media screen and (max-width: 768px) {
+    /* Ajustar largura e altura do menu */
+    .menu-wrap, .menu-wrap-2 {
+        width: 100%; /* Menu ocupa toda a largura da tela */
+        height: auto; /* Altura ajustada automaticamente */
+        padding: 1em; /* Reduz o espaçamento interno */
+        transform: translate3d(-100%, 0, 0); /* Inicia fora da tela à esquerda */
+    }
+
+    /* Botão de menu */
+    .menu-button {
+        margin: 0.5em; /* Reduz margem para telas menores */
+        width: 2em; /* Ajusta o tamanho do botão */
+        height: 2em;
+    }
+
+    .menu-button::before {
+        top: 0.4em; /* Ajusta o alinhamento das barras */
+        right: 0.4em;
+        bottom: 0.4em;
+        left: 0.4em;
+    }
+
+    /* Close button (botão fechar) */
+    .close-button {
+        width: 1.5em;
+        height: 1.5em;
+        top: 0.5em;
+        right: 0.5em;
+    }
+
+    /* Conteúdo principal quando o menu está visível */
+    .show-menu .content-wrap {
+        transform: translate3d(200px, 0, 0); /* Empurra o conteúdo para a direita */
+    }
+
+    .show-menu .menu-wrap {
+        transform: translate3d(0, 0, 0); /* Mostra o menu na tela */
+    }
+}
+
+/* Configurações para telas muito pequenas (ex.: smartphones) */
+@media screen and (max-width: 480px) {
+    /* Ajustar ainda mais o menu */
+    .menu-wrap, .menu-wrap-2 {
+        padding: 0.5em; /* Reduz o espaçamento interno */
+    }
+
+    /* Ajusta o tamanho dos ícones no menu */
+    .icon-list a {
+        padding: 0.6em 0.4em;
+        font-size: 0.9em; /* Reduz o tamanho da fonte */
+    }
+
+    .profile img {
+        width: 30px; /* Reduz tamanho da imagem do perfil */
+        height: 30px;
+    }
+
+    .profile {
+        font-size: 0.9em; /* Ajusta tamanho da fonte do perfil */
+    }
+
+    /* Ajusta conteúdo principal */
+    .content-wrap {
+        overflow-y: auto; /* Habilita rolagem para conteúdos longos */
+    }
+}

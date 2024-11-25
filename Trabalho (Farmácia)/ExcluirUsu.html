@@ -41,19 +41,16 @@
 						<div class="image-container">
 							<img src="https://i.imgur.com/IDpU4dX.png" alt="">
 						</div>
-						<!-- Div para mostrar a mensagem de sucesso -->
-						<div id="mensagemSucesso" style="display: none; color: rgb(116, 178, 126); margin-top: 10px;">
-							Cadastro realizado com sucesso!
-						</div>
 						<div class="caixa">
-                            <div id="excluir" class="form-section">
-                                <h2>Excluir Usuário</h2>
-                                <label>CPF para Exclusão:</label>
-                                <input type="text" id="cpfExcluir" required pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="Formato: xxx.xxx.xxx-xx">
-                                <button onclick="excluirUsuario()">Excluir</button>
-                            </div>
+							<div id="excluir" class="form-section">
+								<h2>Excluir Usuário</h2>
+								<label>CPF para Exclusão:</label>
+								<input type="text" id="cpfExcluir" required pattern="\d{3}\.\d{3}\.\d{3}-\d{2}"
+									title="Formato: xxx.xxx.xxx-xx">
+								<button onclick="excluirUsuario()">Excluir</button>
+							</div>
 						</div>
-						
+						<div class="message" id="excluirMessage"></div>
 					</nav>
 				</header>
 				<!-- Related demos -->

@@ -40,12 +40,7 @@
                         <div class="image-container">
                             <img src="https://i.imgur.com/IDpU4dX.png" alt="">
                         </div>
-                        <!-- Div para mostrar a mensagem de sucesso -->
-                        <div id="mensagemSucesso" style="display: none; color: rgb(116, 178, 126); margin-top: 10px;">
-                            Cadastro realizado com sucesso!
-                        </div>
                         <div class="caixa">
-                            <!-- Cadastrar Cliente -->
                             <div id="cadastrarCliente" class="form-section">
                                 <h2>Cadastrar Cliente</h2>
                                 <form id="formCadastrarCliente" onsubmit="return cadastrarCliente(event)">
@@ -81,10 +76,23 @@
                                     </div>
                                     <button type="submit">Cadastrar Cliente</button>
                                 </form>
+                                <div id="messageCadastrar" class="error"></div>
+                                <div id="successMessageCadastrar" class="success"></div>
                             </div>
                         </div>
-                        <div id="messageCadastrar" class="error"></div>
-                        <div id="successMessageCadastrar" class="success"></div>
+                        <table id="tabelaClientesCadastrados">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Data de Nascimento</th>
+                                    <th>Convênio</th>
+                                    <th>Telefone</th>
+                                    <th>Endereço</th>
+                                    <th>CPF</th>
+                                </tr>
+                            </thead>
+                            <tbody id="clientesTableBody"></tbody>
+                        </table>
                     </nav>
                 </header>
                 <!-- Related demos -->

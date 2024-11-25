@@ -42,14 +42,13 @@
                             <img src="https://i.imgur.com/IDpU4dX.png" alt="">
                         </div>
                         <div class="caixa">
-                            <!-- Excluir Cliente -->
-                            <div id="excluirCliente" class="form-section">
+                            <<div id="excluirCliente" class="form-section">
                                 <h2>Excluir Cliente</h2>
-                                <form id="formExcluirCliente" onsubmit="return excluirCliente(event)">
+                                <form id="formExcluirCliente" onsubmit="excluirCliente(event)">
                                     <div class="form-group">
                                         <label for="cpfExcluir">CPF do Cliente *</label>
                                         <input type="text" id="cpfExcluir" name="cpfExcluir" required
-                                            pattern="\d{3}\.\d{3}\.\d{3}-\d{2}">
+                                            pattern="\d{3}\.\d{3}\.\d{3}-\d{2}" title="Formato: xxx.xxx.xxx-xx">
                                     </div>
                                     <button type="submit">Excluir Cliente</button>
                                 </form>
@@ -68,7 +67,7 @@
     </div><!-- /container -->
     <script src="js/classie.js"></script>
     <script src="js/main.js"></script>
-    <script src="js/funcao.js"></script>
+    <script src="js/cliente.js"></script>
 
 </body>
 

@@ -42,34 +42,35 @@
                             <img src="https://i.imgur.com/IDpU4dX.png" alt="">
                         </div>
                         <div class="caixa">
-                            <!-- Consultar Cliente -->
                             <div id="consultarCliente" class="form-section">
                                 <h2>Consultar Cliente</h2>
                                 <form id="formConsultarCliente" onsubmit="return consultarCliente(event)">
                                     <div class="form-group">
                                         <label for="consultaNome">Nome</label>
-                                        <input type="text" id="consultaNome" name="consultaNome"
-                                            placeholder="Digite o nome">
+                                        <input type="text" id="consultaNome" name="consultaNome" placeholder="Digite o nome">
                                     </div>
                                     <div class="form-group">
                                         <label for="consultaCpf">CPF</label>
-                                        <input type="text" id="consultaCpf" name="consultaCpf"
-                                            placeholder="Digite o CPF" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}">
+                                        <input type="text" id="consultaCpf" name="consultaCpf" placeholder="Digite o CPF" pattern="\d{3}\.\d{3}\.\d{3}-\d{2}">
                                     </div>
                                     <button type="submit">Consultar Cliente</button>
                                 </form>
                             </div>
                         </div>
-                        <div class="message" id="consultaResultado" style="display: none;color:red;">Nenhum Usuário
-							encontrado</div>
-                        <table>
-                            <tr>
-                                <th>Nome</th>
-                                <th>CPF</th>
-                                <th>Telefone</th>
-                                <th>Endereço</th>
-                            </tr>
-                            <tbody id="resultadoConsultaTable"></tbody>
+                        <div id="messageConsultar" class="error"></div>
+                        <div id="successMessageConsultar" class="success"></div>
+                        <table id="tabelaClientesConsultados" style="margin-top: 20px;">
+                            <thead>
+                                <tr>
+                                    <th>Nome</th>
+                                    <th>Data de Nascimento</th>
+                                    <th>Convênio</th>
+                                    <th>Telefone</th>
+                                    <th>Endereço</th>
+                                    <th>CPF</th>
+                                </tr>
+                            </thead>
+                            <tbody id="consultarTableBody"></tbody>
                         </table>
                     </nav>
                 </header>
