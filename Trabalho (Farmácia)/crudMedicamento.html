@@ -1,0 +1,528 @@
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Farmácia Lotus</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #d9f7d6; /* Verde claro */
+            color: #333;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            background-color: #b3d9ff; /* Azul bebê */
+            color: #fff;
+            padding: 30px;
+            border-bottom: 4px solid #cce5cc;
+            width: 100%;
+            max-width: 800px;
+        }
+        header h1 {
+            font-size: 2.5em;
+            margin: 10px 0;
+        }
+        .header-decorations {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+        }
+        .header-icon-user {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        .header-icon-user img, .header-decorations img {
+            width: 30px;
+            margin-right: 5px;
+        }
+        header p {
+            margin: 10px 0 0;
+            font-size: 1.2em;
+            font-weight: 300;
+            color: #f3f9f3;
+        }
+        .button-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap;
+            margin-top: 50px;
+        }
+        .button-container a {
+            display: inline-block;
+            padding: 20px 40px;
+            margin: 10px;
+            background-color: #b3d9ff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 18px;
+            text-align: center;
+            transition: background-color 0.3s ease;
+        }
+        .button-container a:hover {
+            background-color: #99ccff;
+        }
+        .container {
+            padding: 20px;
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: none;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            font-weight: bold;
+            color: #5a5a5a;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="date"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d6d6d6;
+            border-radius: 5px;
+            background-color: #fff;
+            color: #333;
+        }
+        input[type="submit"] {
+            width: 100%;
+            padding: 10px;
+            background-color: #cce5cc;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            color: #333;
+            font-weight: bold;
+        }
+        input[type="submit"]:hover {
+            background-color: #b3d9b3;
+        }
+        .required {
+            color: #d9534f;
+        }
+        .warning {
+            background-color: #fff3cd;
+            color: #856404;
+            padding: 10px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            border: 1px solid #ffeeba;
+        }
+        .back-button {
+            background-color: #ff9999;
+            color: #fff;
+            padding: 10px 20px;
+            text-decoration: none;
+            font-weight: bold;
+            border-radius: 5px;
+            margin-top: 20px;
+            display: inline-block;
+            text-align: center;
+        }
+        .back-button:hover {
+            background-color: #ff6666;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .scroll-table {
+            max-height: 300px; /* Altura máxima da tabela */
+            overflow-y: auto; /* Permitir rolagem vertical */
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="header-decorations">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/plus-math.png" alt="Ícone Cruz Verde">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/pill.png" alt="Ícone Pílula">
+    </div>
+    <div class="header-icon-user">
+        <img src="https://img.icons8.com/ios-filled/50/ffffff/user.png" alt="Ícone de Usuário">
+    </div>
+    <h1>Farmácia Lotus</h1>
+    <p>Selecione a opção desejada</p>
+</header>
+
+<div class="button-container">
+    <a href="#incluir" onclick="showForm('incluir')">Incluir Medicamento</a>
+    <a href="#consultar" onclick="showForm('consultar')">Consultar Medicamento</a>
+    <a href="#alterar" onclick="showForm('alterar')">Alterar Medicamento</a>
+    <a href="#excluir" onclick="showForm('excluir')">Excluir Medicamento</a>
+</div>
+
+<!-- Formulário para Incluir Medicamento -->
+<div id="incluir" class="container">
+    <h2>Incluir Medicamento</h2>
+    <form onsubmit="handleIncluir(event)">
+        <div class="form-group">
+            <label for="nomeComercial">Nome Comercial <span class="required">*</span></label>
+            <input type="text" id="nomeComercial" name="nomeComercial" required>
+        </div>
+        <div class="form-group">
+            <label for="nomeGenerico">Nome Genérico</label>
+            <input type="text" id="nomeGenerico" name="nomeGenerico">
+        </div>
+        <div class="form-group">
+            <label for="formaFarmaceutica">Forma Farmacêutica</label>
+            <input type="text" id="formaFarmaceutica" name="formaFarmaceutica">
+        </div>
+        <div class="form-group">
+            <label for="dosagem">Dosagem</label>
+            <input type="text" id="dosagem" name="dosagem">
+        </div>
+        <div class="form-group">
+            <label for="viaAdministracao">Via de Administração</label>
+            <input type="text" id="viaAdministracao" name="viaAdministracao">
+        </div>
+        <div class="form-group">
+            <label for="registroAnvisa">Registro da Anvisa</label>
+            <input type="text" id="registroAnvisa" name="registroAnvisa">
+        </div>
+        <div class="form-group">
+            <label for="fabricante">Fabricante</label>
+            <input type="text" id="fabricante" name="fabricante">
+        </div>
+        <div class="form-group">
+            <label for="lote">Lote</label>
+            <input type="text" id="lote" name="lote">
+        </div>
+        <div class="form-group">
+            <label for="validade">Validade</label>
+            <input type="date" id="validade" name="validade">
+        </div>
+        <div class="form-group">
+            <label for="substanciaAtiva">Substância Ativa</label>
+            <input type="text" id="substanciaAtiva" name="substanciaAtiva">
+        </div>
+        <div class="form-group">
+            <label for="valor">Valor</label>
+            <input type="text" id="valor" name="valor">
+        </div>
+        <div class="form-group">
+            <label for="quantidade">Quantidade</label>
+            <input type="number" id="quantidade" name="quantidade">
+        </div>
+        <input type="submit" value="Incluir Medicamento">
+    </form>
+    <div class="message" id="incluirMessage"></div>
+    
+    <div class="scroll-table">
+        <table id="tabelaMedicamentosIncluidos" style="display:none;">
+            <thead>
+                <tr>
+                    <th>Nome Comercial</th>
+                    <th>Nome Genérico</th>
+                    <th>Forma Farmacêutica</th>
+                    <th>Dosagem</th>
+                    <th>Via de Administração</th>
+                    <th>Registro da Anvisa</th>
+                    <th>Fabricante</th>
+                    <th>Lote</th>
+                    <th>Validade</th>
+                    <th>Substância Ativa</th>
+                    <th>Valor</th>
+                    <th>Quantidade</th>
+                </tr>
+            </thead>
+            <tbody id="medicamentosTableBody"></tbody>
+        </table>
+    </div>
+
+    <a href="#" class="back-button" onclick="showHome()">Voltar à Tela Inicial</a>
+</div>
+
+<!-- Formulário para Consultar Medicamento -->
+<div id="consultar" class="container">
+    <h2>Consultar Medicamento</h2>
+    <form onsubmit="handleConsultar(event)">
+        <div class="form-group">
+            <label for="consultarNome">Nome do Medicamento</label>
+            <input type="text" id="consultarNome" name="consultarNome" required>
+        </div>
+        <div class="form-group">
+            <label for="consultarDosagem">Dosagem</label>
+            <input type="text" id="consultarDosagem" name="consultarDosagem">
+        </div>
+        <div class="form-group">
+            <label for="consultarFormaFarmaceutica">Forma Farmacêutica</label>
+            <input type="text" id="consultarFormaFarmaceutica" name="consultarFormaFarmaceutica">
+        </div>
+        <input type="submit" value="Consultar Medicamento">
+    </form>
+    <div class="message" id="consultaResultado"></div>
+    
+    <div class="scroll-table">
+        <table id="tabelaMedicamentosConsultados" style="display:none;">
+            <thead>
+                <tr>
+                    <th>Nome Comercial</th>
+                    <th>Nome Genérico</th>
+                    <th>Forma Farmacêutica</th>
+                    <th>Dosagem</th>
+                    <th>Via de Administração</th>
+                    <th>Registro da Anvisa</th>
+                    <th>Fabricante</th>
+                    <th>Lote</th>
+                    <th>Validade</th>
+                    <th>Substância Ativa</th>
+                    <th>Valor</th>
+                    <th>Quantidade</th>
+                </tr>
+            </thead>
+            <tbody id="consultarMedicamentosTableBody"></tbody>
+        </table>
+    </div>
+    
+    <a href="#" class="back-button" onclick="showHome()">Voltar à Tela Inicial</a>
+</div>
+
+<!-- Formulário para Alterar Medicamento -->
+<div id="alterar" class="container">
+    <h2>Alterar Medicamento</h2>
+    <form onsubmit="handleAlterar(event)">
+        <div class="form-group">
+            <label for="alterarNome">Nome do Medicamento</label>
+            <input type="text" id="alterarNome" name="alterarNome" required>
+        </div>
+        <div class="form-group">
+            <label for="alterarLote">Lote</label>
+            <input type="text" id="alterarLote" name="alterarLote">
+        </div>
+        <div class="form-group">
+            <label for="alterarValidade">Validade</label>
+            <input type="date" id="alterarValidade" name="alterarValidade">
+        </div>
+        <div class="form-group">
+            <label for="alterarPreco">Preço</label>
+            <input type="text" id="alterarPreco" name="alterarPreco">
+        </div>
+        <div class="form-group">
+            <label for="alterarSubstancia">Substância Ativa</label>
+            <input type="text" id="alterarSubstancia" name="alterarSubstancia">
+        </div>
+        <input type="submit" value="Alterar Medicamento">
+    </form>
+    <div class="message" id="alterarMessage"></div>
+    <a href="#" class="back-button" onclick="showHome()">Voltar à Tela Inicial</a>
+</div>
+
+<!-- Formulário para Excluir Medicamento -->
+<div id="excluir" class="container">
+    <h2>Excluir Medicamento</h2>
+    <form onsubmit="handleExcluir(event)">
+        <div class="form-group">
+            <label for="excluirNome">Nome do Medicamento</label>
+            <input type="text" id="excluirNome" name="excluirNome" required>
+        </div>
+        <div class="form-group">
+            <label for="excluirPrescricao">Prescrição Ativa</label>
+            <input type="text" id="excluirPrescricao" name="excluirPrescricao">
+        </div>
+        <div class="form-group">
+            <label for="excluirEstoque">Estoque</label>
+            <input type="number" id="excluirEstoque" name="excluirEstoque">
+        </div>
+        <input type="submit" value="Excluir Medicamento">
+    </form>
+    <div class="message" id="excluirMensagem"></div>
+    <div class="confirmation" id="excluirConfirmacao" style="display:none;">
+        <button class="yes-button" onclick="confirmarExclusao(true)">Sim</button>
+        <button class="no-button" onclick="confirmarExclusao(false)">Não</button>
+    </div>
+    <div class="message" id="excluirMessage"></div>
+    <a href="#" class="back-button" onclick="showHome()">Voltar à Tela Inicial</a>
+</div>
+
+<script>
+    let medicamentos = [];
+
+    function showForm(formId) {
+        const forms = document.querySelectorAll('.container');
+        forms.forEach(form => form.style.display = 'none');
+        document.getElementById(formId).style.display = 'block';
+    }
+
+    function showHome() {
+        const forms = document.querySelectorAll('.container');
+        forms.forEach(form => form.style.display = 'none');
+    }
+
+    function handleIncluir(event) {
+        event.preventDefault();
+
+        const nomeComercial = document.getElementById('nomeComercial').value;
+        const nomeGenerico = document.getElementById('nomeGenerico').value;
+        const formaFarmaceutica = document.getElementById('formaFarmaceutica').value;
+        const dosagem = document.getElementById('dosagem').value;
+        const viaAdministracao = document.getElementById('viaAdministracao').value;
+        const registroAnvisa = document.getElementById('registroAnvisa').value;
+        const fabricante = document.getElementById('fabricante').value;
+        const lote = document.getElementById('lote').value;
+        const validade = document.getElementById('validade').value;
+        const substanciaAtiva = document.getElementById('substanciaAtiva').value;
+        const valor = document.getElementById('valor').value;
+        const quantidade = document.getElementById('quantidade').value;
+
+        medicamentos.push({ nomeComercial, nomeGenerico, formaFarmaceutica, dosagem, viaAdministracao, registroAnvisa, fabricante, lote, validade, substanciaAtiva, valor, quantidade });
+        
+        document.getElementById('incluirMessage').textContent = "Medicamento incluído com sucesso!";
+        atualizarTabelaMedicamentosIncluidos();
+        
+        limparCamposIncluir();
+    }
+
+    function atualizarTabelaMedicamentosIncluidos() {
+        const tabela = document.getElementById('tabelaMedicamentosIncluidos');
+        const tbody = document.getElementById('medicamentosTableBody');
+        tbody.innerHTML = '';
+
+        medicamentos.forEach(m => {
+            const linha = document.createElement('tr');
+            linha.innerHTML = `
+                <td>${m.nomeComercial}</td>
+                <td>${m.nomeGenerico}</td>
+                <td>${m.formaFarmaceutica}</td>
+                <td>${m.dosagem}</td>
+                <td>${m.viaAdministracao}</td>
+                <td>${m.registroAnvisa}</td>
+                <td>${m.fabricante}</td>
+                <td>${m.lote}</td>
+                <td>${m.validade}</td>
+                <td>${m.substanciaAtiva}</td>
+                <td>${m.valor}</td>
+                <td>${m.quantidade}</td>
+            `;
+            tbody.appendChild(linha);
+        });
+
+        tabela.style.display = 'block';
+    }
+
+    function limparCamposIncluir() {
+        document.getElementById('nomeComercial').value = '';
+        document.getElementById('nomeGenerico').value = '';
+        document.getElementById('formaFarmaceutica').value = '';
+        document.getElementById('dosagem').value = '';
+        document.getElementById('viaAdministracao').value = '';
+        document.getElementById('registroAnvisa').value = '';
+        document.getElementById('fabricante').value = '';
+        document.getElementById('lote').value = '';
+        document.getElementById('validade').value = '';
+        document.getElementById('substanciaAtiva').value = '';
+        document.getElementById('valor').value = '';
+        document.getElementById('quantidade').value = '';
+    }
+
+    function handleConsultar(event) {
+        event.preventDefault();
+        const nome = document.getElementById('consultarNome').value;
+        const dosagem = document.getElementById('consultarDosagem').value;
+        const formaFarmaceutica = document.getElementById('consultarFormaFarmaceutica').value;
+
+        const resultados = medicamentos.filter(m => {
+            return (
+                (nome && m.nomeComercial.includes(nome)) ||
+                (dosagem && m.dosagem.includes(dosagem)) ||
+                (formaFarmaceutica && m.formaFarmaceutica && m.formaFarmaceutica.includes(formaFarmaceutica))
+            );
+        });
+
+        const tabela = document.getElementById('tabelaMedicamentosConsultados');
+        const tbody = document.getElementById('consultarMedicamentosTableBody');
+        tbody.innerHTML = '';
+        document.getElementById('consultaResultado').textContent = '';
+
+        if (resultados.length > 0) {
+            resultados.forEach(m => {
+                const linha = document.createElement('tr');
+                linha.innerHTML = `
+                    <td>${m.nomeComercial}</td>
+                    <td>${m.nomeGenerico}</td>
+                    <td>${m.formaFarmaceutica}</td>
+                    <td>${m.dosagem}</td>
+                    <td>${m.viaAdministracao}</td>
+                    <td>${m.registroAnvisa}</td>
+                    <td>${m.fabricante}</td>
+                    <td>${m.lote}</td>
+                    <td>${m.validade}</td>
+                    <td>${m.substanciaAtiva}</td>
+                    <td>${m.valor}</td>
+                    <td>${m.quantidade}</td>
+                `;
+                tbody.appendChild(linha);
+            });
+            tabela.style.display = 'block';
+        } else {
+            document.getElementById('consultaResultado').textContent = "Nenhum medicamento encontrado com as informações fornecidas.";
+        }
+
+        limparCamposConsultar();
+    }
+
+    function limparCamposConsultar() {
+        document.getElementById('consultarNome').value = '';
+        document.getElementById('consultarDosagem').value = '';
+        document.getElementById('consultarFormaFarmaceutica').value = '';
+    }
+
+    function handleAlterar(event) {
+        event.preventDefault();
+        document.getElementById('alterarMessage').textContent = "Medicamento alterado com sucesso!";
+        // Lógica de alteração pode ser implementada aqui
+    }
+
+    function handleExcluir(event) {
+        event.preventDefault();
+        const nome = document.getElementById('excluirNome').value;
+        document.getElementById('excluirMensagem').textContent = `Tem certeza que deseja excluir ${nome}?`;
+        document.getElementById('excluirConfirmacao').style.display = 'block';
+    }
+
+    function confirmarExclusao(confirmado) {
+        if (confirmado) {
+            document.getElementById('excluirMessage').textContent = "Medicamento excluído com sucesso!";
+            // Lógica de exclusão pode ser implementada aqui.
+        } else {
+            document.getElementById('excluirMessage').textContent = "Exclusão cancelada";
+        }
+        document.getElementById('excluirConfirmacao').style.display = 'none';  // Oculta a caixa de confirmação
+        document.getElementById('excluirMensagem').textContent = "";  // Limpa a mensagem de confirmação
+    }
+</script>
+</body>
+</html>
